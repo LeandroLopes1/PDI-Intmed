@@ -32,17 +32,19 @@ Segunda semana:
 
 Criar um app register_user para cadastro de usuário.
 
-Utilizar a rota hhtp://my-application-url/v1/register para cadastrar um usuário.
+Utilizar a rota hhtp://localhost/api/v1/register para cadastrar um usuário.
 
-Sobreescrever a classe User do django para fazer o cadastro de usuário. Criar uma classe para fazer o cadastro de usuário com o nome de usuário, senha e email.
+Sobreescrever a classe User do django para fazer o cadastro de usuário. Criar uma classe para fazer o cadastro de usuário com senha e email.
+
+Validações.
 
 Terceira semana:
 
 criar um app login_user para autenticação de usuário.
 
-Utilizar a rota hhtp://my-application-url/v1/login para autenticar um usuário.
+Utilizar a rota hhtp://localhost/v1/login para autenticar um usuário.
 
-buscar o usuário no banco de dados e enviar o token de autenticação.
+buscar o usuário no banco de dados e enviar o token de autenticação e validação de usuário.
 
 por ultimo criar testes para requisições de cadastro e autenticação.
 

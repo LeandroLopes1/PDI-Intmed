@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from register_user.views import UsuarioViewSet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/register/', UsuarioViewSet.as_view({'get': 'list', 'post': 'create'})),
 ]
