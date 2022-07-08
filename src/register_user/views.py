@@ -11,3 +11,13 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
  
 
+""" from rest_framework import mixins, viewsets
+from .models import Usuario
+from .serializers import UsuarioSerializer
+
+# Create your views here.
+
+class UsuarioList(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+ """

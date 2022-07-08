@@ -19,8 +19,4 @@ class UsuarioSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('A senha deve ter entre 6 e 8 caracteres')
         return password
  
-    def validate_email(self, email):
-        if Usuario.objects.filter(email=email).exists():
-            raise serializers.ValidationError('Email já cadastrado')
-        return email
-      
+   
