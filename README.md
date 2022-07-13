@@ -31,7 +31,7 @@ API de autenticação simples.
 # Instalação
 
 - São duas maneiras de instalar o projeto:
-  - Com o ambiente de virtual.
+  - com o ambiente de virtual.
   - com o Docker.
 
 
