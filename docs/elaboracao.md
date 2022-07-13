@@ -46,7 +46,7 @@ Utilizar a rota hhtp://localhost/v1/login para autenticar um usuário.
 
 buscar o usuário no banco de dados e enviar o token de autenticação e validação de usuário.
 
-por ultimo criar testes para requisições de cadastro e autenticação.
+
 
 
 
