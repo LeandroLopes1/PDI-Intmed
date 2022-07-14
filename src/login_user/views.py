@@ -1,4 +1,3 @@
-from lib2to3.pgen2 import token
 from rest_framework import viewsets, status, mixins
 from .serializers import LoginUserSerializer
 from rest_framework.response import Response
@@ -51,6 +50,8 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                 status=status.HTTP_401_UNAUTHORIZED
             )
         if user.check_password(password):
+            # cria um token de acesso e um token de refresh manualmente
+            # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/creating_tokens_manually.html
             refresh = RefreshToken.for_user(user)
             data = {
                 'refresh': str(refresh),
