@@ -153,3 +153,6 @@ CACHES = {
         'LOCATION': 'redis://127.0.0.1:6379',
     }
 }
+
+# Cache time to live is 15 minutes.
+CACHE_TTL = 60 * 15
