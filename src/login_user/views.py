@@ -1,11 +1,31 @@
 from rest_framework import viewsets, status, mixins
 from .serializers import LoginUserSerializer
 from rest_framework.response import Response
+from django.conf import settings
+
+from django.core.cache import cache
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from register_user.models import Usuario
-from .models import LoginUserModel
+
+
+# tempo de vida do cache 
+# https://realpython.com/caching-in-django-with-redis/
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
+
+# função para buscar o valor do cache
+def get_cache(key):
+    return cache.get(key)
+  
+# função para salvar o valor do cache
+def set_cache(key, value):
+    cache.set(key, value, CACHE_TTL)
+
+
 
 class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = LoginUserSerializer
@@ -30,12 +50,35 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                 status=status.HTTP_401_UNAUTHORIZED
             )
         if user.check_password(password):
+            # cria um token de acesso e um token de refresh manualmente
+            # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/creating_tokens_manually.html
             refresh = RefreshToken.for_user(user)
             data = {
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 'user_id': user.id
             } 
-            LoginUserModel.objects.create(**data)
-            return Response(data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        token_cache = get_cache(user.id)
+        if token_cache:
+            return Response(
+                data={
+                    'refresh': token_cache['refresh'],
+                    'access': token_cache['access'],
+                    'user_id': user.id,
+                    'message': "redis"
+                },
+                status=status.HTTP_200_OK
+            )
+        else:
+            set_cache(user.id, data)
+            return Response(
+                data={
+                    'refresh': data['refresh'],
+                    'access': data['access'],
+                    'user_id': user.id,
+                    'message': 'banco'
+                },
+                status=status.HTTP_200_OK
+            )
+

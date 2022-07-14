@@ -27,6 +27,7 @@ API de autenticação simples.
   - [sqlite3](https://docs.python.org/3/library/sqlite3.html)
   - [Docker](https://www.docker.com/)
   - [Docker Compose](https://docs.docker.com/compose/install/)
+  - [redis](https://redis.io/)
  
 # Instalação
 
@@ -63,12 +64,31 @@ Com o Docker:
 
 - `docker-compose build`
 
-3. Execute o projeto:
-
-- `docker-compose up`
-
 
 # Execução
+
+Com o docker:
+
+  - `docker-compose up`
+
+
+
+Com ambiente de virtual:
+
+- procure o arquivo src/api_authentication/settings.py
+- descomente a linha 'LOCATION': 'redis://127.0.0.1:6379',
+- comente a linha 'LOCATION': 'redis://redis:6379',
+
+```
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        #'LOCATION': 'redis://127.0.0.1:6379',
+        'LOCATION': 'redis://redis:6379/',
+    }
+}
+
+```
 
 com a venv ativa:
 
