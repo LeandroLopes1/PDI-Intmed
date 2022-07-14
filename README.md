@@ -3,7 +3,7 @@
     
 # Sumário
 
-- [Sobre o desafio](#sobre)
+- [Sobre o PDI](#sobre)
 - [Requisitos técnicos](#requisitos)
 - [Tecnologias utilizadas](#requisitos)
 - [Comandos para instalar na sua maquina](#instalação)
