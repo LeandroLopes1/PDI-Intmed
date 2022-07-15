@@ -41,7 +41,9 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             user = Usuario.objects.get(email=email)
         except Usuario.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': 'email não cadastrado'})
-      
+        # check_password compara a senha do hash com a senha de texto simples e verificamos se elas são equivalentes
+        # a senha de hash ou não.
+        # https://pythonguides.com/encrypt-and-decrypt-password-in-django/
         if not user.check_password(password):
             return Response(
                 data={
@@ -49,16 +51,7 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                 },
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        if user.check_password(password):
-            # cria um token de acesso e um token de refresh manualmente
-            # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/creating_tokens_manually.html
-            refresh = RefreshToken.for_user(user)
-            data = {
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'user_id': user.id
-            } 
-
+     
         token_cache = get_cache(user.id)
         if token_cache:
             return Response(
@@ -70,15 +63,22 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                 },
                 status=status.HTTP_200_OK
             )
-        else:
-            set_cache(user.id, data)
-            return Response(
-                data={
-                    'refresh': data['refresh'],
-                    'access': data['access'],
-                    'user_id': user.id,
-                    'message': 'banco'
-                },
-                status=status.HTTP_200_OK
-            )
+          # cria um token de acesso e um token de refresh manualmente
+        # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/creating_tokens_manually.html
+        refresh = RefreshToken.for_user(user)
+        data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id
+        }
 
+        set_cache(user.id, data)
+        return Response(
+            data={
+                'refresh': data['refresh'],
+                'access': data['access'],
+                'user_id': user.id,
+                'message': 'banco'
+            },
+            status=status.HTTP_200_OK
+        )
