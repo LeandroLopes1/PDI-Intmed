@@ -32,11 +32,11 @@ API de autenticação simples.
 # Instalação
 
 - São duas maneiras de instalar o projeto:
-  - com o ambiente de virtual.
+  - com o ambiente virtual.
   - com o Docker.
 
 
-Com ambiente de virtual:
+Com ambiente virtual:
 
 1. Clone o repositório
 
