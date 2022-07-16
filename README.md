@@ -73,7 +73,7 @@ Com o docker:
 
 
 
-Com ambiente de virtual:
+Com ambiente virtual:
 
 - procure o arquivo src/api_authentication/settings.py
 - descomente a linha 'LOCATION': 'redis://127.0.0.1:6379',
