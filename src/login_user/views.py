@@ -9,6 +9,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from register_user.models import Usuario
+from .models import LoginUserModel
 
 
 # tempo de vida do cache 
@@ -39,6 +40,7 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         password = serializer.validated_data['password']
         try:
             user = Usuario.objects.get(email=email)
+      
         except Usuario.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': 'email não cadastrado'})
         # check_password compara a senha do hash com a senha de texto simples e verificamos se elas são equivalentes
@@ -63,7 +65,7 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                 },
                 status=status.HTTP_200_OK
             )
-          # cria um token de acesso e um token de refresh manualmente
+        # cria um token de acesso e um token de refresh manualmente
         # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/creating_tokens_manually.html
         refresh = RefreshToken.for_user(user)
         data = {
@@ -71,6 +73,12 @@ class LoginUserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             'access': str(refresh.access_token),
             'user_id': user.id
         }
+
+        LoginUserModel.objects.create(
+            user_id=user.id,
+            refresh=str(refresh),
+            access=str(refresh.access_token)
+        )
 
         set_cache(user.id, data)
         return Response(
